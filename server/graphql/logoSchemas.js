@@ -16,7 +16,7 @@ var logoType = new GraphQLObjectType({
             _id: {
                 type: GraphQLString
             },
-            text: {
+            title: {
                 type: GraphQLString
             },
             color: {
@@ -80,32 +80,32 @@ var queryType = new GraphQLObjectType({
                     return logoDetails
                 }
             },
-            getLogoByText: {
+            getLogoByTitle: {
                 type: new GraphQLList(logoType),
                 args: {
-                    text: {
-                        name: 'text',
+                    title: {
+                        name: 'title',
                         type: GraphQLString
                     }
                 },
                 resolve: function(root, params){
-                    const logos = LogoModel.find({text: params.text}).exec();
+                    const logos = LogoModel.find({title: params.title}).exec();
                     if (!logos) {
                         throw new Error('Error');
                     }
                     return logos;
                 }
             },
-            getLogosByTextContains: {
+            getLogosByTitleContains: {
                 type: new GraphQLList(logoType),
                 args: {
-                    text: {
-                        name: 'text',
+                    title: {
+                        name: 'title',
                         type: GraphQLString
                     }
                 },
                 resolve: function(root, params){
-                    const logos = LogoModel.find({text: {$regex: params.text, $options: 'i'}}).exec();
+                    const logos = LogoModel.find({title: {$regex: params.title, $options: 'i'}}).exec();
                     if (!logos) {
                         throw new Error('Error');
                     }
@@ -123,7 +123,7 @@ var mutation = new GraphQLObjectType({
             addLogo: {
                 type: logoType,
                 args: {
-                    text: {
+                    title: {
                         type: new GraphQLNonNull(GraphQLString)
                     },
                     color: {
@@ -167,7 +167,7 @@ var mutation = new GraphQLObjectType({
                         name: 'id',
                         type: new GraphQLNonNull(GraphQLString)
                     },
-                    text: {
+                    title: {
                         type: new GraphQLNonNull(GraphQLString)
                     },
                     color: {
@@ -197,7 +197,7 @@ var mutation = new GraphQLObjectType({
                 },
                 resolve(root, params) {
                     return LogoModel.findByIdAndUpdate(params.id,
-                        { text: params.text, color: params.color, fontSize: params.fontSize,
+                        { title: params.title, color: params.color, fontSize: params.fontSize,
                             backgroundColor : params.backgroundColor, borderColor : params.borderColor,
                             borderWidth: params.borderWidth, borderRadius: params.borderRadius,
                             padding: params.padding, margin: params.margin, lastUpdate: new Date() }, function (err) {

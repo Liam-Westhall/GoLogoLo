@@ -8,7 +8,7 @@ const GET_LOGO = gql`
     query logo($logoId: String) {
         logo(id: $logoId) {
             _id
-            text
+            title
             color
             fontSize
             backgroundColor
@@ -24,7 +24,7 @@ const GET_LOGO = gql`
 const UPDATE_LOGO = gql`
     mutation updateLogo(
         $id: String!,
-        $text: String!,
+        $title: String!,
         $color: String!,
         $fontSize: Int!,
         $backgroundColor: String!,
@@ -35,7 +35,7 @@ const UPDATE_LOGO = gql`
         $margin: Int!) {
             updateLogo(
                 id: $id,
-                text: $text,
+                title: $title,
                 color: $color,
                 fontSize: $fontSize
                 backgroundColor: $backgroundColor,
@@ -55,7 +55,7 @@ class EditLogoScreen extends Component {
         super(props)
 
         this.state = {
-            renderText: "",
+            renderTitle: "",
             renderColor: "",
             renderBackgroundColor: "",
             renderBorderColor: "",
@@ -68,7 +68,7 @@ class EditLogoScreen extends Component {
     }
 
     render() {
-        let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin;
+        let title, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin;
         return (
             <Query query={GET_LOGO} variables={{ logoId: this.props.match.params.id }}>
                 {({ loading, error, data }) => {
@@ -89,11 +89,11 @@ class EditLogoScreen extends Component {
                                         <div className="panel-body row">                                            
                                             <form className="col-6" onSubmit={e => {
                                                 e.preventDefault();
-                                                updateLogo({ variables: { id: data.logo._id, text: text.value, color: color.value, fontSize: parseInt(fontSize.value),
+                                                updateLogo({ variables: { id: data.logo._id, title: title.value, color: color.value, fontSize: parseInt(fontSize.value),
                                                                             backgroundColor: backgroundColor.value, borderColor: borderColor.value,
                                                                             borderWidth: parseInt(borderWidth.value), borderRadius: parseInt(borderRadius.value),
                                                                             padding: parseInt(padding.value), margin: parseInt(margin.value)  } });
-                                                text.value = "";
+                                                title.value = "";
                                                 color.value = "";
                                                 fontSize.value = "";
                                                 backgroundColor.value = "";
@@ -105,9 +105,9 @@ class EditLogoScreen extends Component {
                                             }}>
                                                 <div className="form-group col-8">
                                                     <label htmlFor="text">Text:</label>
-                                                    <input type="text" className="form-control" name="text" ref={node => {
-                                                        text = node;
-                                                    }} onChange={() => this.setState({renderText: text.value})} placeholder={data.logo.text} defaultValue={data.logo.text} />
+                                                    <input type="text" className="form-control" name="title" ref={node => {
+                                                        title = node;
+                                                    }} onChange={() => this.setState({renderTitle: title.value})} placeholder={data.logo.title} defaultValue={data.logo.title} />
                                                 </div>
                                                 <div className="form-group col-4">
                                                     <label htmlFor="color">Color:</label>
@@ -129,7 +129,7 @@ class EditLogoScreen extends Component {
                                                 </div>
                                                 <div className="form-group col-8">
                                                     <label htmlFor="fontSize">Font Size:</label>
-                                                    <input type="text" onInput={()=>{fontSize.value = clamp(fontSize.value, 0, 144);}} className="form-control" name="fontSize" ref={node => {
+                                                    <input type="title" onInput={()=>{fontSize.value = clamp(fontSize.value, 0, 144);}} className="form-control" name="fontSize" ref={node => {
                                                         fontSize = node;
                                                     }} onChange={() => this.setState({renderFontSize: parseInt(fontSize.value)})} placeholder={data.logo.fontSize} defaultValue={data.logo.fontSize} />
                                                 </div>
@@ -157,7 +157,7 @@ class EditLogoScreen extends Component {
                                                         margin = node;
                                                     }} onChange={() => this.setState({renderMargin: parseInt(margin.value)})} placeholder={data.logo.margin} defaultValue={data.logo.margin} />
                                                 </div>
-                                                <button type="submit" className="btn btn-success">Submit</button>
+                                                <button type="submit" className="btn btn-success">Submit</button>  
                                             </form>
                                             <div className="col-6">
                                                 <span style={{
@@ -171,7 +171,7 @@ class EditLogoScreen extends Component {
                                                     borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : data.logo.borderRadius) + "px",
                                                     padding: (this.state.renderPadding ? this.state.renderPadding : data.logo.padding) + "px",
                                                     margin: (this.state.renderMargin ? this.state.renderMargin : data.logo.margin) + "px"
-                                                }}>{this.state.renderText ? this.state.renderText :  data.logo.text}</span>
+                                                }}>{this.state.renderTitle ? this.state.renderTitle :  data.logo.title}</span>
                                             </div>
                                             {loading && <p>Loading...</p>}
                                             {error && <p>Error :( Please try again</p>}

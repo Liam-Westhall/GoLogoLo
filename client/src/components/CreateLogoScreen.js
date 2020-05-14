@@ -6,7 +6,7 @@ import { clamp } from '../utils/utlity';
 
 const ADD_LOGO = gql`
     mutation AddLogo(
-        $text: String!,
+        $title: String!,
         $color: String!,
         $fontSize: Int!,
         $backgroundColor: String!,
@@ -16,7 +16,7 @@ const ADD_LOGO = gql`
         $padding: Int!,
         $margin: Int!) {
         addLogo(
-            text: $text,
+            title: $title,
             color: $color,
             fontSize: $fontSize,
             backgroundColor: $backgroundColor,
@@ -36,7 +36,7 @@ class CreateLogoScreen extends Component {
         super(props)
         
         this.state = {
-            renderText: "",
+            renderTitle: "",
             renderColor: "",
             renderBackgroundColor: "",
             renderBorderColor: "",
@@ -49,7 +49,7 @@ class CreateLogoScreen extends Component {
     }
 
     render() {
-        let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin;
+        let title, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin;
         return (
             <Mutation mutation={ADD_LOGO} onCompleted={() => this.props.history.push('/')}>
                 {(addLogo, { loading, error }) => (
@@ -64,11 +64,11 @@ class CreateLogoScreen extends Component {
                             <div className="panel-body row">
                                 <form className="col-6" onSubmit={e => {
                                     e.preventDefault();
-                                    addLogo({ variables: { text: text.value, color: color.value, fontSize: parseInt(fontSize.value),
+                                    addLogo({ variables: { title: title.value, color: color.value, fontSize: parseInt(fontSize.value),
                                                             backgroundColor: backgroundColor.value, borderColor: borderColor.value,
                                                             borderWidth: parseInt(borderWidth.value), borderRadius: parseInt(borderRadius.value),
                                                             padding: parseInt(padding.value), margin: parseInt(margin.value) } });
-                                    text.value = "";
+                                    title.value = "";
                                     color.value = "";
                                     fontSize.value = "";
                                     backgroundColor.value = "";
@@ -79,10 +79,10 @@ class CreateLogoScreen extends Component {
                                     margin.value = "";
                                 }}>
                                     <div className="form-group col-8">
-                                        <label htmlFor="text">Text:</label>
-                                        <input type="text" className="form-control" name="text" ref={node => {
-                                            text = node;
-                                        }} onChange={() => this.setState({renderText: text.value})} placeholder="Text" />
+                                        <label htmlFor="text">Title:</label>
+                                        <input type="text" className="form-control" name="title" ref={node => {
+                                            title = node;
+                                        }} onChange={() => this.setState({renderTitle: title.value})} placeholder="Title" />
                                     </div>
                                     <div className="form-group col-4">
                                         <label htmlFor="color">Color:</label>
@@ -146,7 +146,7 @@ class CreateLogoScreen extends Component {
                                         borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : 5) + "px",
                                         padding: (this.state.renderPadding ? this.state.renderPadding : 0) + "px",
                                         margin: (this.state.renderMargin ? this.state.renderMargin : 0) + "px"
-                                    }}>{this.state.renderText ? this.state.renderText : "New Logo"}</span>
+                                    }}>{this.state.renderTitle ? this.state.renderTitle : "New Logo"}</span>
                                 </div>
                                 {loading && <p>Loading...</p>}
                                 {error && <p>Error :( Please try again</p>}
