@@ -32,7 +32,7 @@ var TextType = new GraphQLObjectType({
     }
 });
 
-var quertyType = new GraphQLObjectType({
+var queryType = new GraphQLObjectType({
     name: 'Query',
     fields: function(){
         return {

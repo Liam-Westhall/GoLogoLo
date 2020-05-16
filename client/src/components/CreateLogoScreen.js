@@ -14,7 +14,9 @@ const ADD_LOGO = gql`
         $borderWidth: Int!,
         $borderRadius: Int!,
         $padding: Int!,
-        $margin: Int!) {
+        $margin: Int!,
+        $width: Int!,
+        $height: Int!) {
         addLogo(
             title: $title,
             color: $color,
@@ -24,7 +26,9 @@ const ADD_LOGO = gql`
             borderWidth: $borderWidth,
             borderRadius: $borderRadius,
             padding: $padding,
-            margin: $margin) {
+            margin: $margin,
+            width: $width,
+            height: $height) {
             _id
         }
     }
@@ -44,12 +48,14 @@ class CreateLogoScreen extends Component {
             renderBorderRadius: "",
             renderFontSize: "",
             renderPadding: "",
-            renderMargin: ""
+            renderMargin: "",
+            renderWidth: "",
+            renderHeight: ""
         }
     }
 
     render() {
-        let title, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin;
+        let title, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin, width, height;
         return (
             <Mutation mutation={ADD_LOGO} onCompleted={() => this.props.history.push('/')}>
                 {(addLogo, { loading, error }) => (
@@ -67,7 +73,7 @@ class CreateLogoScreen extends Component {
                                     addLogo({ variables: { title: title.value, color: color.value, fontSize: parseInt(fontSize.value),
                                                             backgroundColor: backgroundColor.value, borderColor: borderColor.value,
                                                             borderWidth: parseInt(borderWidth.value), borderRadius: parseInt(borderRadius.value),
-                                                            padding: parseInt(padding.value), margin: parseInt(margin.value) } });
+                                                            padding: parseInt(padding.value), margin: parseInt(margin.value), width: parseInt(width.value), height: parseInt(height.value)} });
                                     title.value = "";
                                     color.value = "";
                                     fontSize.value = "";
@@ -77,6 +83,8 @@ class CreateLogoScreen extends Component {
                                     borderRadius.value = "";
                                     padding.value = "";
                                     margin.value = "";
+                                    width.value = "";
+                                    height.value = ""
                                 }}>
                                     <div className="form-group col-8">
                                         <label htmlFor="text">Title:</label>
@@ -132,6 +140,18 @@ class CreateLogoScreen extends Component {
                                             margin = node;
                                         }} onChange={() => this.setState({renderMargin: parseInt(margin.value)})} placeholder="Margin" />
                                     </div>
+                                    <div className = "form-group col-8">
+                                                    <label htmlFor = "width">Width:</label>
+                                                    <input type = "number" onInput ={()=> {width.value = clamp(width.value, 0, 600);}} className = "form-control" name = "width" ref = {node => {
+                                                        width = node;
+                                                    }} onChange = {() => this.setState({renderWidth: parseInt(width.value)})} placeholder = "Width" />
+                                     </div>
+                                     <div className = "form-group col-8">
+                                                    <label htmlFor = "height">Height:</label> 
+                                                    <input type = "number" onInput = {() => {height.value = clamp(height.value, 0, 600)}} className = "form-control" name = "height" ref = {node => {
+                                                        height = node;
+                                                    }} onChange = {() => this.setState({renderHeight: parseInt(height.value)})} placeholder = "height" />
+                                    </div> 
                                     <button type="submit" className="btn btn-success">Submit</button>
                                 </form>
                                 <div className="col-6">
@@ -145,7 +165,9 @@ class CreateLogoScreen extends Component {
                                         borderWidth: (this.state.renderBorderWidth ? this.state.renderBorderWidth : 5) + "px",
                                         borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : 5) + "px",
                                         padding: (this.state.renderPadding ? this.state.renderPadding : 0) + "px",
-                                        margin: (this.state.renderMargin ? this.state.renderMargin : 0) + "px"
+                                        margin: (this.state.renderMargin ? this.state.renderMargin : 0) + "px",
+                                        width: (this.state.renderWidth ? this.state.renderWidth: 0) + "px",
+                                        height: (this.state.renderHeight ? this.state.renderHeight: 0) + "px"
                                     }}>{this.state.renderTitle ? this.state.renderTitle : "New Logo"}</span>
                                 </div>
                                 {loading && <p>Loading...</p>}
