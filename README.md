@@ -1,3 +1,21 @@
+GoLogoLo the logo making website is a website utilizing the MERN statck (MongoDb, Express, React, and Node) to create awesome logos! Certain additions to it such as adding draggable text and images and exporting a logo will be added in the future soon.
+Below are queries that Implemented with GraphiQL and Mongoose
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Some useful queries for GraphiQL
 
 Get all information about all logos:
